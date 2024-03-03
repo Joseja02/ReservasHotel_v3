@@ -1,5 +1,7 @@
 package org.iesalandalus.programacion.reservashotel.modelo.dominio;
 
+import com.sun.source.tree.InstanceOfTree;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -23,6 +25,30 @@ public class Reserva {
     private double precio;
     private int numeroPersonas;
 
+    public Reserva(Huesped huesped, Habitacion habitacion, Regimen regimen, LocalDate fechaInicioReserva, LocalDate fechaFinReserva, int numeroPersonas) {
+        setHuesped(huesped);
+        setHabitacion(habitacion);
+        setRegimen(regimen);
+        setFechaInicioReserva(fechaInicioReserva);
+        setFechaFinReserva(fechaFinReserva);
+        setNumeroPersonas(numeroPersonas);
+    }
+
+    public Reserva(Reserva reservaCopia) {
+        if (reservaCopia == null) {
+            throw new NullPointerException("ERROR: No es posible copiar una reserva nula.");
+        }
+        this.huesped = reservaCopia.getHuesped();
+        this.habitacion = reservaCopia.getHabitacion();
+        this.regimen = reservaCopia.getRegimen();
+        this.fechaInicioReserva = reservaCopia.getFechaInicioReserva();
+        this.fechaFinReserva = reservaCopia.getFechaFinReserva();
+        this.numeroPersonas = reservaCopia.getNumeroPersonas();
+        this.precio = reservaCopia.getPrecio();
+        this.checkIn = reservaCopia.getCheckIn();
+        this.checkOut = reservaCopia.getCheckOut();
+    }
+
     public Huesped getHuesped() {
         return huesped;
     }
@@ -42,7 +68,18 @@ public class Reserva {
         if (habitacion == null) {
             throw new NullPointerException("ERROR: La habitación de una reserva no puede ser nula.");
         }
-        this.habitacion = habitacion;
+        if (habitacion instanceof Simple){
+            this.habitacion = new Simple(habitacion.getPlanta(), habitacion.getPuerta(), habitacion.getPrecio());
+        }
+        if (habitacion instanceof Doble){
+            this.habitacion = new Doble(habitacion.getPlanta(), habitacion.getPuerta(), habitacion.getPrecio(), ((Doble) habitacion).getNumCamasIndividuales(), ((Doble) habitacion).getNumCamasDobles());
+        }
+        if (habitacion instanceof Triple){
+            this.habitacion = new Triple(habitacion.getPlanta(), habitacion.getPuerta(), habitacion.getPrecio(), ((Triple) habitacion).getNumBanos(), ((Triple) habitacion).getNumCamasIndividuales(), ((Triple) habitacion).getNumCamasDobles());
+        }
+        if (habitacion instanceof Suite){
+            this.habitacion = new Suite(habitacion.getPlanta(), habitacion.getPuerta(), habitacion.getPrecio(), ((Suite) habitacion).getNumBanos(), ((Suite) habitacion).isTieneJacuzzi());
+        }
     }
 
     public Regimen getRegimen() {
@@ -152,38 +189,11 @@ public class Reserva {
         if (numeroPersonas <= 0) {
             throw new IllegalArgumentException("ERROR: El número de personas de una reserva no puede ser menor o igual a 0.");
         }
-
-        TipoHabitacion numeroMaximoPersonas = habitacion.getTipoHabitacion();
-
-        if (numeroPersonas > numeroMaximoPersonas.getNumeroMaximoPersonas()) {
+        if (numeroPersonas > habitacion.getNumeroMaximoPersonas()) {
             throw new IllegalArgumentException("ERROR: El número de personas de una reserva no puede superar al máximo de personas establecidas para el tipo de habitación reservada.");
         }
 
         this.numeroPersonas = numeroPersonas;
-    }
-
-    public Reserva(Huesped huesped, Habitacion habitacion, Regimen regimen, LocalDate fechaInicioReserva, LocalDate fechaFinReserva, int numeroPersonas) {
-        setHuesped(huesped);
-        setHabitacion(habitacion);
-        setRegimen(regimen);
-        setFechaInicioReserva(fechaInicioReserva);
-        setFechaFinReserva(fechaFinReserva);
-        setNumeroPersonas(numeroPersonas);
-    }
-
-    public Reserva(Reserva reservaCopia) {
-        if (reservaCopia == null) {
-            throw new NullPointerException("ERROR: No es posible copiar una reserva nula.");
-        }
-        this.huesped = reservaCopia.getHuesped();
-        this.habitacion = reservaCopia.getHabitacion();
-        this.regimen = reservaCopia.getRegimen();
-        this.fechaInicioReserva = reservaCopia.getFechaInicioReserva();
-        this.fechaFinReserva = reservaCopia.getFechaFinReserva();
-        this.numeroPersonas = reservaCopia.getNumeroPersonas();
-        this.precio = reservaCopia.getPrecio();
-        this.checkIn = reservaCopia.getCheckIn();
-        this.checkOut = reservaCopia.getCheckOut();
     }
 
     @Override
@@ -203,7 +213,6 @@ public class Reserva {
     public String toString() {
         return "Huesped: " + huesped.getNombre() + " " + huesped.getDni() +
                 " Habitación:" + habitacion.getIdentificador() + " - " +
-                habitacion.getTipoHabitacion() +
                 " Fecha Inicio Reserva: " + getFechaInicioReserva().format(DateTimeFormatter.ofPattern(FORMATO_FECHA_RESERVA)) +
                 " Fecha Fin Reserva: " + getFechaFinReserva().format(DateTimeFormatter.ofPattern(FORMATO_FECHA_RESERVA)) +
                 " Checkin: " + (getCheckIn() == null ? "No registrado" : getCheckIn().format(DateTimeFormatter.ofPattern(FORMATO_FECHA_HORA_RESERVA))) +
