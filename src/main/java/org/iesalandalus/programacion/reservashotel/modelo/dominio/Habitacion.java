@@ -2,12 +2,11 @@ package org.iesalandalus.programacion.reservashotel.modelo.dominio;
 
 import java.util.Objects;
 
-public class Habitacion {
-    private String identificador;
-    private int planta;
-    private int puerta;
-    private double precio;
-    private TipoHabitacion tipoHabitacion;
+public abstract class Habitacion {
+    protected String identificador;
+    protected int planta;
+    protected int puerta;
+    protected double precio;
     public static final double MIN_PRECIO_HABITACION = 40.0;
     public static final double MAX_PRECIO_HABITACION = 150.0;
     public static final int MIN_NUMERO_PUERTA = 0;
@@ -15,10 +14,27 @@ public class Habitacion {
     public static final int MIN_NUMERO_PLANTA = 1;
     public static final int MAX_NUMERO_PLANTA = 3;
 
+    public Habitacion (int planta, int puerta, double precio) {
+        setPlanta(planta);
+        setPuerta(puerta);
+        setPrecio(precio);
+        setIdentificador();
+    }
+    public Habitacion (Habitacion habitacionCopia){
+        if (habitacionCopia == null){
+            throw new NullPointerException("ERROR: No es posible copiar una habitación nula.");
+        }
+        this.identificador = habitacionCopia.getIdentificador();
+        this.planta = habitacionCopia.getPlanta();
+        this.puerta = habitacionCopia.getPuerta();
+        this.precio = habitacionCopia.getPrecio();
+    }
+    public abstract int getNumeroMaximoPersonas();
+
     public String getIdentificador() {
         return identificador;
     }
-    private void setIdentificador(String identificador) {
+    protected void setIdentificador(String identificador) {
         if (identificador == null){
             throw new NullPointerException("ERROR: El identificador no puede ser nulo.");
         }
@@ -26,7 +42,7 @@ public class Habitacion {
         identificador = String.valueOf(this.planta) + String.valueOf(this.puerta);
         this.identificador = identificador;
     }
-    private void setIdentificador(){
+    protected void setIdentificador(){
         this.identificador = String.valueOf(this.planta) + String.valueOf(this.puerta);
     }
 
@@ -34,19 +50,18 @@ public class Habitacion {
         return planta;
     }
 
-    private void setPlanta(int planta) {
+    protected void setPlanta(int planta) {
 
         if (planta < MIN_NUMERO_PLANTA || planta > MAX_NUMERO_PLANTA){
             throw new IllegalArgumentException("ERROR: No se puede establecer como planta de una habitación un valor menor que 1 ni mayor que 3.");
         }
         this.planta = planta;
     }
-
     public int getPuerta() {
         return puerta;
     }
 
-    private void setPuerta(int puerta) {
+    protected void setPuerta(int puerta) {
 
         if (puerta > MAX_NUMERO_PUERTA || puerta < MIN_NUMERO_PUERTA){
             throw new IllegalArgumentException("ERROR: No se puede establecer como puerta de una habitación un valor menor que 0 ni mayor que 14.");
@@ -65,45 +80,6 @@ public class Habitacion {
         }
         this.precio = precio;
     }
-
-    public TipoHabitacion getTipoHabitacion() {
-        return tipoHabitacion;
-    }
-    public void setTipoHabitacion(TipoHabitacion tipoHabitacion) {
-
-        if (tipoHabitacion == null){
-            throw new NullPointerException("ERROR: No se puede establecer un tipo de habitación nula.");
-        }
-
-        this.tipoHabitacion = tipoHabitacion;
-    }
-
-    public Habitacion (int planta, int puerta, double precio){
-        setPlanta(planta);
-        setPuerta(puerta);
-        setPrecio(precio);
-        tipoHabitacion = TipoHabitacion.SIMPLE;
-        setIdentificador();
-    }
-
-    public Habitacion (int planta, int puerta, double precio, TipoHabitacion tipoHabitacion){
-        setPlanta(planta);
-        setPuerta(puerta);
-        setPrecio(precio);
-        setTipoHabitacion(tipoHabitacion);
-        setIdentificador();
-    }
-
-    public Habitacion (Habitacion habitacionCopia){
-        if (habitacionCopia == null){
-            throw new NullPointerException("ERROR: No es posible copiar una habitación nula.");
-        }
-        this.identificador = habitacionCopia.getIdentificador();
-        this.planta = habitacionCopia.getPlanta();
-        this.puerta = habitacionCopia.getPuerta();
-        this.precio = habitacionCopia.getPrecio();
-        this.tipoHabitacion = habitacionCopia.getTipoHabitacion();
-    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -120,7 +96,6 @@ public class Habitacion {
     public String toString() {
         return "identificador=" + getIdentificador() +
                 " (" + planta + "-" + puerta + ")" +
-                ", precio habitación=" + getPrecio() +
-                ", tipo habitación=" + getTipoHabitacion();
+                ", precio habitación=" + getPrecio();
     }
 }
