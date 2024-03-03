@@ -18,6 +18,25 @@ public class Huesped {
     private static final String ER_DNI = "^(\\d{8})([A-Za-z])$";
     public static final String FORMATO_FECHA = "dd/MM/yyyy";
 
+    public Huesped(String nombre, String dni, String correo, String telefono, LocalDate fechaNacimiento){
+        setNombre(nombre);
+        setDni(dni);
+        setCorreo(correo);
+        setTelefono(telefono);
+        setFechaNacimiento(fechaNacimiento);
+    }
+    public Huesped (Huesped huespedCopia){
+        if (huespedCopia == null){
+            throw new NullPointerException("ERROR: No es posible copiar un huésped nulo.");
+        }
+
+        this.nombre = huespedCopia.getNombre();
+        this.dni = huespedCopia.getDni();
+        this.correo = huespedCopia.getCorreo();
+        this.telefono = huespedCopia.getTelefono();
+        this.fechaNacimiento = huespedCopia.getFechaNacimiento();
+    }
+
     private String formateaNombre(String nombre) {
 
         String nombreFormateado;
@@ -130,24 +149,6 @@ public class Huesped {
             iniciales += inicial.toUpperCase();
         }
         return iniciales;
-    }
-    public Huesped(String nombre, String dni, String correo, String telefono, LocalDate fechaNacimiento){
-        setNombre(nombre);
-        setDni(dni);
-        setCorreo(correo);
-        setTelefono(telefono);
-        setFechaNacimiento(fechaNacimiento);
-    }
-    public Huesped (Huesped huespedCopia){
-        if (huespedCopia == null){
-            throw new NullPointerException("ERROR: No es posible copiar un huésped nulo.");
-        }
-
-        this.nombre = huespedCopia.getNombre();
-        this.dni = huespedCopia.getDni();
-        this.correo = huespedCopia.getCorreo();
-        this.telefono = huespedCopia.getTelefono();
-        this.fechaNacimiento = huespedCopia.getFechaNacimiento();
     }
     @Override
     public boolean equals(Object o) {
