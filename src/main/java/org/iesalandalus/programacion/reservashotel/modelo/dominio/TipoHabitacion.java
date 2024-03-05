@@ -12,8 +12,6 @@ public enum TipoHabitacion {
     }
     @Override
     public String toString() {
-        return "TipoHabitacion{" +
-                "cadenaAMostrar='" + cadenaAMostrar + '\'' +
-                '}';
+        return String.format("%d.- %s", ordinal(), cadenaAMostrar);
     }
 }
