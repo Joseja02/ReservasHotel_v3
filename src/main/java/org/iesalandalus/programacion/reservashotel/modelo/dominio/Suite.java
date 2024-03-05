@@ -2,8 +2,8 @@ package org.iesalandalus.programacion.reservashotel.modelo.dominio;
 
 public class Suite extends Habitacion{
     private static final int NUM_MAXIMO_PERSONAS = 4;
-    public static final int MIN_NUM_BANOS = 1;
-    public static final int MAX_NUM_BANOS = 2;
+    static final int MIN_NUM_BANOS = 1;
+    static final int MAX_NUM_BANOS = 2;
     private int numBanos;
     private boolean tieneJacuzzi;
 
@@ -22,8 +22,8 @@ public class Suite extends Habitacion{
     }
 
     public void setNumBanos(int numBanos) {
-        if (numBanos < MIN_NUM_BANOS){
-            throw new IllegalArgumentException("ERROR: No pueden haber -1 bañosss.");
+        if (numBanos < MIN_NUM_BANOS || numBanos > MAX_NUM_BANOS){
+            throw new IllegalArgumentException("ERROR: El número de baños no puede ser inferior a 1 ni superior a 2");
         }
         this.numBanos = numBanos;
     }
@@ -41,13 +41,7 @@ public class Suite extends Habitacion{
     }
     @Override
     public String toString() {
-        return "Suite{" +
-                "numBanos=" + numBanos +
-                ", tieneJacuzzi=" + tieneJacuzzi +
-                ", identificador='" + identificador + '\'' +
-                ", planta=" + planta +
-                ", puerta=" + puerta +
-                ", precio=" + precio +
-                '}';
+        return super.toString() + ", habitación suite, " + "capacidad=" + NUM_MAXIMO_PERSONAS +
+                " personas," + " baños=" + getNumBanos() + (isTieneJacuzzi() ? ", con Jacuzzi" : ", sin Jacuzzi");
     }
 }

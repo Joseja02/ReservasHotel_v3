@@ -11,13 +11,9 @@ public class Simple extends Habitacion {
     }
     @Override
     public int getNumeroMaximoPersonas(){ return NUM_MAXIMO_PERSONAS; }
+
     @Override
     public String toString() {
-        return "Simple{" +
-                "identificador='" + identificador + '\'' +
-                ", planta=" + planta +
-                ", puerta=" + puerta +
-                ", precio=" + precio +
-                '}';
+        return super.toString() + ", habitación simple, " + "capacidad="+NUM_MAXIMO_PERSONAS+" personas";
     }
 }

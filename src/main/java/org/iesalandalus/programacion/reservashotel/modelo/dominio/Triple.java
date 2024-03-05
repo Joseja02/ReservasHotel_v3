@@ -2,12 +2,12 @@ package org.iesalandalus.programacion.reservashotel.modelo.dominio;
 
 public class Triple extends Habitacion {
     private static final int NUM_MAXIMO_PERSONAS = 3;
-    public static final int MIN_NUM_BANOS = 1;
-    public static final int MAX_NUM_BANOS = 2;
-    public static final int MIN_NUM_CAMAS_INDIVIDUALES = 2;
-    protected static final int MAX_NUM_CAMAS_INDIVIDUALES = 3;
-    protected static final int MIN_NUM_CAMAS_DOBLES = 0;
-    protected static final int MAX_NUM_CAMAS_DOBLES = 1;
+    static final int MIN_NUM_BANOS = 1;
+    static final int MAX_NUM_BANOS = 2;
+    static final int MIN_NUM_CAMAS_INDIVIDUALES = 1;
+    static final int MAX_NUM_CAMAS_INDIVIDUALES = 3;
+    static final int MIN_NUM_CAMAS_DOBLES = 0;
+    static final int MAX_NUM_CAMAS_DOBLES = 1;
     private int numBanos;
     private int numCamasIndividuales;
     private int numCamasDobles;
@@ -19,6 +19,7 @@ public class Triple extends Habitacion {
         setNumCamasDobles(numCamasDobles);
         validaNumCamas();
     }
+
     public Triple(Triple habitacionTriple) {
         super(habitacionTriple);
         this.numCamasIndividuales = getNumCamasIndividuales();
@@ -31,8 +32,8 @@ public class Triple extends Habitacion {
     }
 
     public void setNumBanos(int numBanos) {
-        if (numBanos < MIN_NUM_BANOS){
-            throw new NullPointerException("ERROR: No pueden haber -1 baños.");
+        if (numBanos < MIN_NUM_BANOS || numBanos > MAX_NUM_BANOS){
+            throw new IllegalArgumentException("ERROR: El número de baños no puede ser inferior a 1 ni superior a 2");
         }
         this.numBanos = numBanos;
     }
@@ -42,8 +43,8 @@ public class Triple extends Habitacion {
     }
 
     public void setNumCamasIndividuales(int numCamasIndividuales) {
-        if (numCamasIndividuales < MIN_NUM_CAMAS_INDIVIDUALES){
-            throw new NullPointerException("ERROR: No pueden haber -1 camas individuales.");
+        if (numCamasIndividuales < MIN_NUM_CAMAS_INDIVIDUALES || numCamasIndividuales > MAX_NUM_CAMAS_INDIVIDUALES){
+            throw new IllegalArgumentException("ERROR: El número de camas individuales de una habitación triple no puede ser inferior a 1 ni mayor que 3");
         }
         this.numCamasIndividuales = numCamasIndividuales;
     }
@@ -53,8 +54,8 @@ public class Triple extends Habitacion {
     }
 
     public void setNumCamasDobles(int numCamasDobles) {
-        if (numCamasDobles < MIN_NUM_CAMAS_DOBLES){
-            throw new NullPointerException("ERROR: No pueden haber -1 camas dobles.");
+        if (numCamasDobles < MIN_NUM_CAMAS_DOBLES || numCamasDobles > MAX_NUM_CAMAS_DOBLES){
+            throw new IllegalArgumentException("ERROR: El número de camas dobles de una habitación triple no puede ser inferior a 0 ni mayor que 1");
         }
         this.numCamasDobles = numCamasDobles;
     }
@@ -62,7 +63,7 @@ public class Triple extends Habitacion {
         if ((numCamasIndividuales == MAX_NUM_CAMAS_INDIVIDUALES && numCamasDobles == MIN_NUM_CAMAS_DOBLES) || (numCamasIndividuales == MIN_NUM_CAMAS_INDIVIDUALES && numCamasDobles == MAX_NUM_CAMAS_DOBLES)){
             //No se lanza excepcion puesto que o hay 3 camas individuales o hay 1 cama doble y 2 individuales.
         } else {
-            throw new IllegalArgumentException("ERROR: El número de camas es incorrecto.");
+            throw new IllegalArgumentException("ERROR: La distribución de camas en una habitación triple tiene que ser 3 camas individuales y 0 doble o 1 cama individual y 1 doble");
         }
     }
     @Override
@@ -72,14 +73,7 @@ public class Triple extends Habitacion {
 
     @Override
     public String toString() {
-        return "Triple{" +
-                "numBanos=" + numBanos +
-                ", numCamasIndividuales=" + numCamasIndividuales +
-                ", numCamasDobles=" + numCamasDobles +
-                ", identificador='" + identificador + '\'' +
-                ", planta=" + planta +
-                ", puerta=" + puerta +
-                ", precio=" + precio +
-                '}';
+        return super.toString() + ", habitación triple, " + "capacidad=" + NUM_MAXIMO_PERSONAS +
+                " personas," + " baños=" + getNumBanos() + ", camas individuales=" + getNumCamasIndividuales() + ", camas dobles=" + getNumCamasDobles();
     }
 }
