@@ -23,7 +23,9 @@ public class Habitaciones implements IHabitaciones {
         List<Habitacion> copia = copiaProfundaHabitaciones();
         List<Habitacion> habitacionesTipo = new ArrayList<>();
 
-        for (int i = 0; i < coleccionHabitaciones.size(); i++) {
+        Iterator<Habitacion> iterador = coleccionHabitaciones.iterator();
+        int i = 0;
+        while (iterador.hasNext()) {
             Habitacion habitacion = copia.get(i);
             if (habitacion instanceof Simple && tipoHabitacion == TipoHabitacion.SIMPLE) {
                 habitacionesTipo.set(i, habitacion);
@@ -34,6 +36,7 @@ public class Habitaciones implements IHabitaciones {
             }else if (habitacion instanceof Suite && tipoHabitacion == TipoHabitacion.SUITE) {
                 habitacionesTipo.set(i, habitacion);
             }
+            i++;
         }
         return habitacionesTipo;
     }
@@ -95,8 +98,11 @@ public class Habitaciones implements IHabitaciones {
 
     public int getTamano() {
         int counter = 0;
-        for (int i = 0; i < coleccionHabitaciones.size(); i++)
+        Iterator<Habitacion> iterador = coleccionHabitaciones.iterator();
+        while (iterador.hasNext()){
+            iterador.next();
             counter++;
+        }
         return counter;
     }
 }

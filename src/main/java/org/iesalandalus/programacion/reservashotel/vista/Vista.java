@@ -10,8 +10,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static org.iesalandalus.programacion.reservashotel.modelo.dominio.Reserva.FORMATO_FECHA_RESERVA;
-
 public class Vista {
 
     private static Controlador controlador;
@@ -30,7 +28,7 @@ public class Vista {
         do {
             Consola.mostrarMenu();
             opcion = Consola.elegirOpcion();
-            //ejecutarOpcion(opcion);
+            opcion.ejecutar();
         }
         while (opcion != Opcion.SALIR);
     }
@@ -38,32 +36,6 @@ public class Vista {
     public void terminar() {
         System.out.print("¡Hasta luego! - Tarea Online 6 | Jose Javier Sierra Berdún");
     }
-
-    /*public static void ejecutarOpcion(Opcion opcion) {
-        switch (opcion) {
-            case SALIR -> System.out.print("¡Hasta luego! - Tarea Online 6 | Jose Javier Sierra Berdún");
-            case INSERTAR_HUESPED -> insertarHuesped();
-            case BUSCAR_HUESPED -> buscarHuesped();
-            case BORRAR_HUESPED -> borrarHuesped();
-            case MOSTRAR_HUESPEDES -> mostrarHuespedes();
-            case INSERTAR_HABITACION -> insertarHabitacion();
-            case BUSCAR_HABITACION -> buscarHabitacion();
-            case BORRAR_HABITACION -> borrarHabitacion();
-            case MOSTRAR_HABITACIONES -> mostrarHabitaciones();
-            case INSERTAR_RESERVA -> insertarReserva();
-            case ANULAR_RESERVA -> anularReserva();
-            case MOSTRAR_RESERVAS -> mostrarReservas();
-            case CONSULTAR_DISPONIBILIDAD -> {
-                TipoHabitacion tipoHabitacion = Consola.leerTipoHabitacion();
-                LocalDate fechaInicioReserva = Consola.leerFecha("Introduzca fecha inicio reserva (" + FORMATO_FECHA_RESERVA + "):");
-                LocalDate fechaFinReserva = Consola.leerFecha("Introduzca fecha inicio reserva (" + FORMATO_FECHA_RESERVA + "):");
-                consultarDisponibilidad(tipoHabitacion, fechaInicioReserva, fechaFinReserva);
-            }
-            case REALIZAR_CHECKIN -> realizarCheckin();
-            case REALIZAR_CHECKOUT -> realizarCheckOut();
-            default -> System.out.print("Opción no válida: " + opcion);
-        }
-    } */
 
     public static void insertarHuesped() {
         try {
@@ -84,7 +56,7 @@ public class Vista {
             Huesped huesped = Consola.leerHuespedPorDni();
             huesped = controlador.buscar(huesped);
             if (huesped != null) {
-                System.out.println(huesped.toString());
+                System.out.println(huesped);
             } else {
                 System.out.print("El huesped no existe");
             }
@@ -148,7 +120,7 @@ public class Vista {
             Habitacion habitacion = Consola.leerHabitacionPorIdentificador();
             habitacion = controlador.buscar(habitacion);
             if (habitacion != null) {
-                System.out.println(habitacion.toString());
+                System.out.println(habitacion);
             } else {
                 System.out.print("La habitación no existe");
             }
@@ -212,11 +184,11 @@ public class Vista {
             }
 
         } catch (NullPointerException e) {
-            System.out.print("ERROR: La reserva a insertar no puede ser nula");
+            System.out.print(e.getMessage());
         } catch (IllegalArgumentException e) {
-            System.out.print("ERROR:La reserva a insertar contiene un valor no permitido");
+            System.out.print(e.getMessage());
         } catch (OperationNotSupportedException e) {
-            System.out.print("ERROR: La operación que intentas realizar no está permitida.");
+            System.out.print(e.getMessage());
         }
     }
 
@@ -547,7 +519,6 @@ public class Vista {
         huesped = controlador.buscar(huesped);
         boolean checkinFallido = false;
 
-        // List<Reserva> reservasHuesped = controlador.getReservas(huesped)
         List<Reserva> reservasDelHuesped = controlador.getReservas(huesped);
 
         for (int i = 0; i < reservasDelHuesped.size(); i++) {

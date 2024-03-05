@@ -50,7 +50,7 @@ public class Reserva {
     }
 
     public Huesped getHuesped() {
-        return huesped;
+        return new Huesped(huesped);
     }
 
     public void setHuesped(Huesped huesped) {

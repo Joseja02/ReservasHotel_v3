@@ -181,7 +181,7 @@ public final class Consola {
 
     public static TipoHabitacion leerTipoHabitacion() {
         for (TipoHabitacion opcion : TipoHabitacion.values()) {
-            System.out.println(opcion.ordinal() + "  -  " + opcion.toString());
+            System.out.println(opcion);
         }
         System.out.print("Escoja tipo de habitación: ");
         int eleccionHabitacion = Entrada.entero();
