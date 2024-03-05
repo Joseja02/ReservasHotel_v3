@@ -42,17 +42,17 @@ public class Huespedes implements IHuespedes {
     public void insertar(Huesped huesped) throws OperationNotSupportedException {
 
         if (huesped == null) {
-            throw new NullPointerException("ERROR: No se puede insertar un huÃ©sped nulo.");
+            throw new NullPointerException("ERROR: No se puede insertar un huésped nulo.");
         }
         if (coleccionHuespedes.contains(huesped)) {
-            throw new OperationNotSupportedException("ERROR: Ya existe un huÃ©sped con ese dni.");
+            throw new OperationNotSupportedException("ERROR: Ya existe un huésped con ese dni.");
         }
         coleccionHuespedes.add(huesped);
     }
 
     public Huesped buscar(Huesped huesped) {
         if (huesped == null) {
-            throw new NullPointerException("ERROR: No se puede buscar un huÃ©sped nulo.");
+            throw new NullPointerException("ERROR: No se puede buscar un huésped nulo.");
         }
 
         if (coleccionHuespedes.contains(huesped)) {
@@ -67,11 +67,11 @@ public class Huespedes implements IHuespedes {
     public void borrar(Huesped huesped) throws OperationNotSupportedException {
 
         if (huesped == null) {
-            throw new NullPointerException("ERROR: No se puede borrar un huÃ©sped nulo.");
+            throw new NullPointerException("ERROR: No se puede borrar un huésped nulo.");
         }
 
         if (!coleccionHuespedes.contains(huesped)) {
-            throw new OperationNotSupportedException("ERROR: No existe ningÃºn huÃ©sped como el indicado.");
+            throw new OperationNotSupportedException("ERROR: No existe ningún huésped como el indicado.");
         }
         coleccionHuespedes.remove(huesped);
     }

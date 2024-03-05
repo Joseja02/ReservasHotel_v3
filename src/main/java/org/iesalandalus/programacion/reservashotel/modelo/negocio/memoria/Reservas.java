@@ -79,7 +79,7 @@ public class Reservas implements IReservas {
 
     public List<Reserva> getReservas(Huesped huesped) {
         if (huesped == null) {
-            throw new NullPointerException("ERROR: No se pueden buscar reservas de un huesped nulo.");
+            throw new NullPointerException("ERROR: No se pueden buscar reservas de un huésped nulo.");
         }
         List<Reserva> reservasHuesped = new ArrayList<>();
         for (int i = 0; i < get().size(); i++) {
