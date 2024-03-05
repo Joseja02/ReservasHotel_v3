@@ -81,7 +81,7 @@ public final class Consola {
     }
 
     public static Habitacion leerHabitacion() {
-        Habitacion habitacion;
+        Habitacion habitacion = null;
         int planta;
         int puerta;
         double precio;
@@ -96,21 +96,86 @@ public final class Consola {
         System.out.print("Introduzca tipo de habitación: ");
         tipoHabitacion = leerTipoHabitacion();
 
-        habitacion = new Habitacion(planta, puerta, precio, tipoHabitacion);
+        if (tipoHabitacion == TipoHabitacion.SIMPLE){
+            habitacion =  new Simple(planta, puerta, precio);
+        }
+        if (tipoHabitacion == TipoHabitacion.DOBLE){
+            int numCamasIndividuales;
+            int numCamasDobles;
+
+            System.out.print("Introduzca el número de camas individuales: ");
+            numCamasIndividuales = Entrada.entero();
+            System.out.print("Introduzca el número de camas dobles: ");
+            numCamasDobles = Entrada.entero();
+
+            habitacion = new Doble(planta, puerta, precio, numCamasIndividuales, numCamasDobles);
+        }
+        if (tipoHabitacion == TipoHabitacion.TRIPLE){
+            int numCamasIndividuales;
+            int numCamasDobles;
+            int numBanos;
+
+            System.out.print("Introduzca el número de camas individuales: ");
+            numCamasIndividuales = Entrada.entero();
+            System.out.print("Introduzca el número de camas dobles: ");
+            numCamasDobles = Entrada.entero();
+            System.out.println("Introduzca el número de baños: ");
+            numBanos = Entrada.entero();
+
+            habitacion = new Triple(planta, puerta, precio, numBanos, numCamasIndividuales, numCamasDobles);
+        }
+        if (tipoHabitacion == TipoHabitacion.SUITE){
+            int numBanos;
+            boolean tieneJacuzzi = false;
+
+            System.out.println("Introduzca el número de baños: ");
+            numBanos = Entrada.entero();
+            System.out.println("¿Tiene esta Suite Jacuzzi?: ");
+            System.out.println("(1) Si");
+            System.out.println("(2) No");
+            int respuesta = Entrada.entero();
+            if (respuesta != 1 && respuesta != 2) {
+                do {
+                    System.out.println("Por favor, escoge entre (1) Si y (2) No");
+                    respuesta = Entrada.entero();
+                    if (respuesta == 1){
+                        tieneJacuzzi = true;
+                    }
+                    else if (respuesta == 2){
+                        tieneJacuzzi = false;
+                    }
+                } while (respuesta != 1 && respuesta != 2);
+            }
+            habitacion = new Suite(planta, puerta, precio, numBanos, tieneJacuzzi);
+        }
         return habitacion;
     }
 
     public static Habitacion leerHabitacionPorIdentificador() {
-        Habitacion habitacion;
+        Habitacion habitacion = null;
         int planta;
         int puerta;
+        TipoHabitacion tipoHabitacion;
 
         System.out.print("Introduzca planta de habitación: ");
         planta = Entrada.entero();
         System.out.print("Introduzca puerta de habitación: ");
         puerta = Entrada.entero();
+        System.out.print("Introduzca tipo de habitación: ");
+        tipoHabitacion = leerTipoHabitacion();
 
-        habitacion = new Habitacion(planta, puerta, 50.25, TipoHabitacion.DOBLE);
+        if (tipoHabitacion == TipoHabitacion.SIMPLE){
+            habitacion = new Simple(planta, puerta, 0);
+        }
+        if (tipoHabitacion == TipoHabitacion.DOBLE){
+            habitacion = new Doble(planta, puerta, 0, 2, 0);
+        }
+        if (tipoHabitacion == TipoHabitacion.TRIPLE){
+            habitacion = new Triple(planta, puerta, 0, 1, 3, 0);
+        }
+        if (tipoHabitacion == TipoHabitacion.SUITE){
+            habitacion = new Suite(planta, puerta, 0, 1, false);
+        }
         return habitacion;
     }
 
