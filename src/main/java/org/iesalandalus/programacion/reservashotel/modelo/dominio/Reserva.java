@@ -14,7 +14,7 @@ public class Reserva {
     public static final int MAX_NUMERO_MESES_RESERVA = 6;
     private static final int MAX_HORAS_POSTERIOR_CHECKOUT = 12;
     public static final String FORMATO_FECHA_RESERVA = "dd/MM/yyyy";
-    public static final String FORMATO_FECHA_HORA_RESERVA = "dd/MM/yyyy HH/mm";
+    public static final String FORMATO_FECHA_HORA_RESERVA = "dd/MM/yyyy HH:mm";
     private Huesped huesped;
     private Habitacion habitacion;
     private Regimen regimen;
@@ -57,10 +57,22 @@ public class Reserva {
         if (huesped == null) {
             throw new NullPointerException("ERROR: El huésped de una reserva no puede ser nulo.");
         }
-        this.huesped = huesped;
+        this.huesped = new Huesped(huesped);
     }
 
     public Habitacion getHabitacion() {
+        if (habitacion instanceof Simple){
+            return new Simple(habitacion.getPlanta(), habitacion.getPuerta(), habitacion.getPrecio());
+        }
+        if (habitacion instanceof Doble){
+            return new Doble(habitacion.getPlanta(), habitacion.getPuerta(), habitacion.getPrecio(), ((Doble) habitacion).getNumCamasIndividuales(), ((Doble) habitacion).getNumCamasDobles());
+        }
+        if (habitacion instanceof Triple){
+            return new Triple(habitacion.getPlanta(), habitacion.getPuerta(), habitacion.getPrecio(), ((Triple) habitacion).getNumBanos(), ((Triple) habitacion).getNumCamasIndividuales(), ((Triple) habitacion).getNumCamasDobles());
+        }
+        if (habitacion instanceof Suite){
+            return new Suite(habitacion.getPlanta(), habitacion.getPuerta(), habitacion.getPrecio(), ((Suite) habitacion).getNumBanos(), ((Suite) habitacion).isTieneJacuzzi());
+        }
         return habitacion;
     }
 

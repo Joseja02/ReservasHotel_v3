@@ -20,23 +20,24 @@ public class Habitaciones implements IHabitaciones {
     }
 
     public List<Habitacion> get(TipoHabitacion tipoHabitacion) {
-        List<Habitacion> copia = copiaProfundaHabitaciones();
+
+        if (tipoHabitacion == null){
+            throw new NullPointerException("ERROR: El tipo de habitación no puede ser nulo");
+        }
         List<Habitacion> habitacionesTipo = new ArrayList<>();
 
         Iterator<Habitacion> iterador = coleccionHabitaciones.iterator();
-        int i = 0;
         while (iterador.hasNext()) {
-            Habitacion habitacion = copia.get(i);
-            if (habitacion instanceof Simple && tipoHabitacion == TipoHabitacion.SIMPLE) {
-                habitacionesTipo.set(i, habitacion);
-            } else if (habitacion instanceof Doble && tipoHabitacion == TipoHabitacion.DOBLE) {
-                habitacionesTipo.set(i, habitacion);
-            }else if (habitacion instanceof Triple && tipoHabitacion == TipoHabitacion.TRIPLE) {
-                habitacionesTipo.set(i, habitacion);
-            }else if (habitacion instanceof Suite && tipoHabitacion == TipoHabitacion.SUITE) {
-                habitacionesTipo.set(i, habitacion);
+            Habitacion habitacion = iterador.next();
+            if (habitacion instanceof Simple && tipoHabitacion.equals(TipoHabitacion.SIMPLE)) {
+                habitacionesTipo.add(habitacion);
+            } else if (habitacion instanceof Doble && tipoHabitacion.equals(TipoHabitacion.DOBLE)) {
+                habitacionesTipo.add(habitacion);
+            }else if (habitacion instanceof Triple && tipoHabitacion.equals(TipoHabitacion.TRIPLE)) {
+                habitacionesTipo.add(habitacion);
+            }else if (habitacion instanceof Suite && tipoHabitacion.equals(TipoHabitacion.SUITE)) {
+                habitacionesTipo.add(habitacion);
             }
-            i++;
         }
         return habitacionesTipo;
     }
@@ -49,13 +50,13 @@ public class Habitaciones implements IHabitaciones {
         while (iterador.hasNext()) {
             Habitacion habitacion = iterador.next();
             if (habitacion instanceof Simple) {
-                copiaHabitaciones.add(new Simple((Simple) habitacion));
+                copiaHabitaciones.add(new Simple (habitacion.getPlanta(), habitacion.getPuerta(), habitacion.getPrecio()));
             } else if (habitacion instanceof Doble) {
-                copiaHabitaciones.add(new Doble((Doble) habitacion));
+                copiaHabitaciones.add(new Doble (habitacion.getPlanta(), habitacion.getPuerta(), habitacion.getPrecio(), ((Doble) habitacion).getNumCamasIndividuales(), ((Doble) habitacion).getNumCamasDobles()));
             } else if (habitacion instanceof Triple) {
-                copiaHabitaciones.add(new Triple((Triple) habitacion));
+                copiaHabitaciones.add(new Triple (habitacion.getPlanta(), habitacion.getPuerta(), habitacion.getPrecio(), ((Triple) habitacion).getNumBanos(), ((Triple) habitacion).getNumCamasIndividuales(), ((Triple) habitacion).getNumCamasDobles()));
             } else if (habitacion instanceof Suite) {
-                copiaHabitaciones.add(new Suite((Suite) habitacion));
+                copiaHabitaciones.add(new Suite (habitacion.getPlanta(), habitacion.getPuerta(), habitacion.getPrecio(), ((Suite) habitacion).getNumBanos(), ((Suite) habitacion).isTieneJacuzzi()));
             }
         }
         return copiaHabitaciones;

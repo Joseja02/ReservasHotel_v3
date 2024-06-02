@@ -86,13 +86,11 @@ public class Reservas implements IReservas {
         }
         List<Reserva> reservasHuesped = new ArrayList<>();
         Iterator<Reserva> iterador = get().iterator();
-        int i = 0;
         while (iterador.hasNext()) {
-            Reserva reserva = get().get(i);
+            Reserva reserva = iterador.next();
             if (reserva.getHuesped().getDni().equals(huesped.getDni())) {
                 reservasHuesped.add(new Reserva(reserva));
             }
-            i++;
         }
         return reservasHuesped;
     }
@@ -103,22 +101,20 @@ public class Reservas implements IReservas {
         }
         List<Reserva> reservasHuesped = new ArrayList<>();
         Iterator<Reserva> iterador = get().iterator();
-        int i = 0;
         while (iterador.hasNext()) {
-            Reserva reserva = get().get(i);
-            if (reserva.getHabitacion() instanceof Simple && tipoHabitacion == TipoHabitacion.SIMPLE){
+            Reserva reserva = iterador.next();
+            if (reserva.getHabitacion() instanceof Simple && tipoHabitacion.equals(TipoHabitacion.SIMPLE)){
                 reservasHuesped.add(new Reserva(reserva));
             }
-            if (reserva.getHabitacion() instanceof Doble && tipoHabitacion == TipoHabitacion.DOBLE){
+            if (reserva.getHabitacion() instanceof Doble && tipoHabitacion.equals(TipoHabitacion.DOBLE)){
                 reservasHuesped.add(new Reserva(reserva));
             }
-            if (reserva.getHabitacion() instanceof Triple && tipoHabitacion == TipoHabitacion.TRIPLE){
+            if (reserva.getHabitacion() instanceof Triple && tipoHabitacion.equals(TipoHabitacion.TRIPLE)){
                 reservasHuesped.add(new Reserva(reserva));
             }
-            if (reserva.getHabitacion() instanceof Suite && tipoHabitacion == TipoHabitacion.SUITE){
+            if (reserva.getHabitacion() instanceof Suite && tipoHabitacion.equals(TipoHabitacion.SUITE)){
                 reservasHuesped.add(new Reserva(reserva));
             }
-            i++;
         }
         return reservasHuesped;
     }
@@ -127,18 +123,16 @@ public class Reservas implements IReservas {
         if (habitacion == null)
             throw new NullPointerException("ERROR: No se pueden buscar reservas de una habitación nula.");
 
-        List<Reserva> reservasHuesped = new ArrayList<>();
+        List<Reserva> reservasHabitacion = new ArrayList<>();
         Iterator<Reserva> iterador = get().iterator();
-        int i = 0;
         while (iterador.hasNext()){
-            Reserva reserva = get().get(i);
+            Reserva reserva = iterador.next();
             if (reserva.getHabitacion().getIdentificador().equals(habitacion.getIdentificador()) &&
                     reserva.getFechaInicioReserva().isAfter(LocalDate.now())) {
-                reservasHuesped.add(new Reserva(reserva));
+                reservasHabitacion.add(new Reserva(reserva));
             }
-            i++;
         }
-        return reservasHuesped;
+        return reservasHabitacion;
     }
 
     public void realizarCheckin(Reserva reserva, LocalDateTime fecha) {
@@ -150,6 +144,17 @@ public class Reservas implements IReservas {
             throw new NullPointerException("ERROR: La fecha de un Checkin no puede ser nula.");
         }
         reserva.setCheckIn(fecha);
+        Iterator<Reserva> iterador = coleccionReservas.iterator();
+        int i = 0;
+        boolean reservaEncontrada = false;
+        while (iterador.hasNext() && !reservaEncontrada) {
+            Reserva reservaIterator = iterador.next();
+            if (reservaIterator.equals(reserva)){
+                coleccionReservas.set(i, reserva);
+                reservaEncontrada = true;
+            }
+            i++;
+        }
     }
 
     public void realizarCheckout(Reserva reserva, LocalDateTime fecha) {
@@ -160,8 +165,19 @@ public class Reservas implements IReservas {
             throw new NullPointerException("ERROR: La fecha de un Checkout no puede ser nula.");
         }
         if (reserva.getCheckIn() == null){
-            throw new IllegalArgumentException("ERROR: No se puede realizar el Checkout sin haber hecho antes el Checkin.");
+            throw new NullPointerException("ERROR: No se puede realizar el Checkout sin haber hecho antes el Checkin.");
         }
         reserva.setCheckOut(fecha);
+        Iterator<Reserva> iterador = coleccionReservas.iterator();
+        int i = 0;
+        boolean reservaEncontrada = false;
+        while (iterador.hasNext() && !reservaEncontrada) {
+            Reserva reservaIterator = iterador.next();
+            if (reservaIterator.equals(reserva)){
+                coleccionReservas.set(i, reserva);
+                reservaEncontrada = true;
+            }
+            i++;
+        }
     }
 }
